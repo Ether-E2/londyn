@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anglia 2026 — przewodnik rodzinny</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Inter:wght@400;500;600&family=Spline+Sans+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1A2B33;
+    --ink-soft:#43585f;
+    --paper:#F4EFE3;
+    --card:#FFFDF8;
+    --post:#C13B2E;
+    --gold:#D99A2B;
+    --teal:#1F6F6B;
+    --line:#DCD2BE;
+    --shadow:0 1px 2px rgba(26,43,51,.06),0 8px 28px rgba(26,43,51,.08);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;background:var(--paper);color:var(--ink);
+    font-family:"Inter",system-ui,sans-serif;font-size:17px;line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  h1,h2,h3{font-family:"Bricolage Grotesque",sans-serif;line-height:1.05;margin:0}
+  .mono{font-family:"Spline Sans Mono",monospace;font-weight:500}
+  a{color:var(--teal)}
+
+  /* ---------- HERO ---------- */
+  .hero{position:relative;min-height:78vh;display:flex;align-items:flex-end;
+    color:#fff;overflow:hidden;background:#0e1a1f}
+  .hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+    transform:scale(1.04);opacity:0;transition:opacity 1.2s ease,transform 8s ease}
+  .hero img.loaded{opacity:.92;transform:scale(1)}
+  .hero::after{content:"";position:absolute;inset:0;
+    background:linear-gradient(180deg,rgba(14,26,31,.15) 0%,rgba(14,26,31,.25) 45%,rgba(14,26,31,.85) 100%)}
+  .hero .wrap{position:relative;z-index:2;width:100%;padding-bottom:46px;padding-top:40px}
+  .eyebrow{font-family:"Spline Sans Mono",monospace;font-weight:600;letter-spacing:.18em;
+    text-transform:uppercase;font-size:13px;color:var(--gold)}
+  .hero h1{font-size:clamp(44px,9vw,104px);font-weight:800;letter-spacing:-.02em;margin:.18em 0 .12em}
+  .hero h1 em{font-style:normal;color:var(--gold)}
+  .hero .lede{font-size:clamp(17px,2.4vw,21px);max-width:30ch;color:#f3ede0;font-weight:400}
+  .ticket{display:flex;flex-wrap:wrap;gap:0;margin-top:26px;
+    background:rgba(255,253,248,.96);color:var(--ink);border-radius:14px;overflow:hidden;
+    box-shadow:var(--shadow);max-width:760px}
+  .ticket .cell{flex:1 1 150px;padding:14px 18px;border-right:1px dashed var(--line)}
+  .ticket .cell:last-child{border-right:none}
+  .ticket .k{font-family:"Spline Sans Mono",monospace;font-size:11px;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--ink-soft)}
+  .ticket .v{font-family:"Bricolage Grotesque",sans-serif;font-weight:700;font-size:19px;margin-top:3px}
+  .ticket .v small{font-weight:500;font-size:13px;color:var(--ink-soft);font-family:"Inter",sans-serif}
+
+  /* ---------- SECTION SHELL ---------- */
+  section{padding:54px 0}
+  .sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:26px}
+  .sec-head .num{font-family:"Spline Sans Mono",monospace;color:var(--post);font-weight:600;font-size:14px}
+  .sec-head h2{font-size:clamp(26px,4vw,38px);font-weight:700;letter-spacing:-.01em}
+
+  /* ---------- PRACTICAL BAND ---------- */
+  .know{background:var(--ink);color:#eef1ef}
+  .know .sec-head h2{color:#fff}
+  .know .sec-head .num{color:var(--gold)}
+  .know-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1px;
+    background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.12);border-radius:14px;overflow:hidden}
+  .know-grid .item{background:var(--ink);padding:20px 20px}
+  .know-grid h3{font-size:16px;font-weight:700;color:var(--gold);margin-bottom:6px;display:flex;gap:8px}
+  .know-grid h3 .tg{font-family:"Spline Sans Mono",monospace;color:rgba(238,241,239,.45);font-size:13px;font-weight:500}
+  .know-grid p{margin:0;font-size:14.5px;color:#d7ddda;line-height:1.55}
+
+  /* ---------- ROUTE / DAYS ---------- */
+  .route{position:relative}
+  .route::before{content:"";position:absolute;left:13px;top:8px;bottom:8px;width:2px;
+    background:linear-gradient(var(--gold),var(--post));opacity:.5}
+  .day{position:relative;padding-left:46px;margin-bottom:30px;
+    opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s ease}
+  .day.in{opacity:1;transform:none}
+  .day::before{content:"";position:absolute;left:6px;top:6px;width:16px;height:16px;border-radius:50%;
+    background:var(--card);border:3px solid var(--post);box-shadow:0 0 0 4px var(--paper)}
+  .day.trip::before{border-color:var(--teal)}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:var(--shadow)}
+  .card .photo{position:relative;height:210px;background:#dfd8c8}
+  .card .photo img{width:100%;height:100%;object-fit:cover;display:block;opacity:0;transition:opacity .8s ease}
+  .card .photo img.loaded{opacity:1}
+  .card .photo .tag{position:absolute;left:14px;top:14px;display:flex;gap:8px;align-items:center;
+    background:rgba(26,43,51,.86);color:#fff;border-radius:999px;padding:6px 13px;
+    font-family:"Spline Sans Mono",monospace;font-weight:600;font-size:12px;letter-spacing:.06em}
+  .card .photo .tag .dot{width:7px;height:7px;border-radius:50%;background:var(--gold)}
+  .card .photo .badge{position:absolute;right:14px;top:14px;background:var(--gold);color:#3a2a06;
+    border-radius:999px;padding:5px 12px;font-family:"Spline Sans Mono",monospace;font-weight:600;font-size:11px;
+    letter-spacing:.05em;text-transform:uppercase}
+  .card .photo .badge.trip{background:var(--teal);color:#eafffb}
+  .card .body{padding:20px 22px 22px}
+  .card h3{font-size:23px;font-weight:700;letter-spacing:-.01em;margin-bottom:4px}
+  .card .where{font-family:"Spline Sans Mono",monospace;font-size:12.5px;color:var(--teal);
+    font-weight:600;margin-bottom:14px}
+  .cgj{display:grid;gap:11px}
+  .cgj .row{display:grid;grid-template-columns:74px 1fr;gap:12px;align-items:start}
+  .cgj .lab{font-family:"Spline Sans Mono",monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--post);font-weight:600;padding-top:3px}
+  .cgj .row.where-row .lab,.cgj .row.how .lab{color:var(--ink-soft)}
+  .cgj .txt{font-size:15px;color:var(--ink)}
+  .cgj .txt b{color:var(--ink);font-weight:600}
+
+  /* ---------- BUDGET ---------- */
+  .budget table{width:100%;border-collapse:collapse;background:var(--card);
+    border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:var(--shadow)}
+  .budget td{padding:13px 18px;border-bottom:1px solid var(--line);font-size:15.5px}
+  .budget tr:last-child td{border-bottom:none}
+  .budget td.amt{text-align:right;font-family:"Spline Sans Mono",monospace;font-weight:600;white-space:nowrap}
+  .budget tr.total td{background:#fbf4e4;font-weight:700}
+  .budget tr.total td.amt{color:var(--post);font-size:17px}
+  .note{font-size:13.5px;color:var(--ink-soft);margin-top:12px}
+
+  /* ---------- CHECKLIST ---------- */
+  .check ul{list-style:none;margin:0;padding:0;display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:10px}
+  .check li{background:var(--card);border:1px solid var(--line);border-radius:11px;
+    padding:13px 15px;display:flex;gap:11px;align-items:flex-start;font-size:15px;box-shadow:var(--shadow)}
+  .check li .box{flex:0 0 18px;height:18px;border:2px solid var(--teal);border-radius:5px;margin-top:2px}
+  .check li b{font-weight:600}
+
+  footer{background:var(--ink);color:#c7d0cd;padding:34px 0;font-size:13.5px;text-align:center}
+  footer .mono{color:var(--gold)}
+
+  @media (max-width:640px){
+    body{font-size:16px}
+    .ticket .cell{flex:1 1 50%;border-right:none;border-bottom:1px dashed var(--line)}
+    .cgj .row{grid-template-columns:1fr;gap:3px}
+    .cgj .lab{padding-top:0}
+    .card .photo{height:185px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .day{opacity:1;transform:none;transition:none}
+    .hero img{transition:opacity .3s}
+    *{scroll-behavior:auto}
+  }
+  :focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <img id="heroimg" alt="Tower Bridge nad Tamizą o zachodzie słońca"
+    src="https://lh3.googleusercontent.com/place-photos/AJRVUZNMP_cjWGqc7QFvGwf3aZiufnCLaPEhbjds-hCH5uiBFcu99OFFyT04VA6K9ilKcMPaNCTksE_AeUi1fOgrBfHdjWI609JOCk2761kX-k-jLLuSvJ4ZenuZE-Tovd8jiR8jU5fwjOUk62WkOA=s4800-w800-h600">
+  <div class="wrap">
+    <div class="eyebrow">Wakacje rodzinne · 30 lipca – 8 sierpnia 2026</div>
+    <h1>Anglia<br><em>w 10 dni</em></h1>
+    <p class="lede">Jedna baza w Londynie, zero przeprowadzek, walizki rozpakowane tylko raz. Reszta — pociągiem, nalekko.</p>
+    <div class="ticket">
+      <div class="cell"><div class="k">Przylot</div><div class="v">7:55 · 30/07<br><small>Stansted (STN)</small></div></div>
+      <div class="cell"><div class="k">Odlot</div><div class="v">21:50 · 08/08<br><small>Stansted (STN)</small></div></div>
+      <div class="cell"><div class="k">Noclegi</div><div class="v">9 nocy<br><small>jedna baza · Londyn</small></div></div>
+      <div class="cell"><div class="k">Osoby</div><div class="v">3<br><small>podróż pociągami</small></div></div>
+    </div>
+  </div>
+</header>
+
+<!-- PRACTICAL -->
+<section class="know">
+  <div class="wrap">
+    <div class="sec-head"><span class="num">00</span><h2>Zanim wyjedziemy — i na miejscu</h2></div>
+    <div class="know-grid">
+      <div class="item">
+        <h3><span class="tg">01</span> Dojazd ze Stansted</h3>
+        <p>Stansted Express do Liverpool Street ~48 min (bilet kup wcześniej — taniej) albo autokar National Express, taniej przy 3 osobach. Uwaga: karta zbliżeniowa nie działa na tej trasie, potrzebny osobny bilet.</p>
+      </div>
+      <div class="item">
+        <h3><span class="tg">02</span> Płatności w Londynie</h3>
+        <p>W metrze i autobusach nie kupujemy biletów — wystarczy telefon lub karta zbliżeniowo przy bramce (wejście i wyjście). Jest dzienny limit kosztów. Dla młodszej osoby poproś w kasie o „Young Visitor discount".</p>
+      </div>
+      <div class="item">
+        <h3><span class="tg">03</span> Railcard</h3>
+        <p>Family &amp; Friends Railcard (~£35) zwykle opłaca się rodzinie już przy kilku dłuższych trasach. Sprawdź aktualne warunki na National Rail i porównaj z Two Together.</p>
+      </div>
+      <div class="item">
+        <h3><span class="tg">04</span> Co rezerwować wcześniej</h3>
+        <p>Hotel, Studio Harry Potter, wstęp do Roman Baths (na godzinę), Tower of London (online taniej) oraz bilety Advance na pociągi do Bath i Brighton. W sierpniu ceny i miejsca topnieją szybko.</p>
+      </div>
+      <div class="item">
+        <h3><span class="tg">05</span> Darmowe muzea</h3>
+        <p>Większość najlepszych muzeów w Londynie ma wstęp bezpłatny (British Museum, Natural History, Science, Tate, Maritime). Warto pobrać darmowe wejściówki online, by ominąć kolejkę.</p>
+      </div>
+      <div class="item">
+        <h3><span class="tg">06</span> Jedzenie taniej</h3>
+        <p>Śniadania w aneksie kuchennym, „meal deal" w Tesco/Boots (~£4), targi (Borough, Camden), piknik w parku. Woda z kranu jest darmowa i dobra — wystarczy poprosić o „tap water".</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DAYS -->
+<section>
+  <div class="wrap">
+    <div class="sec-head"><span class="num">→</span><h2>Plan dzień po dniu</h2></div>
+    <div class="route">
+
+      <!-- DAY 1 -->
+      <article class="day trip">
+        <div class="card">
+          <div class="photo">
+            <img alt="King's College w Cambridge" data-src="https://lh3.googleusercontent.com/place-photos/AJRVUZPCcSwmYb8H1Hc41ErjJUPdDpclFXTDS1TXy-OHKzoS8BjCOVq3vk2HpLQ2FYpgvEDjvUgo6FMMaWLSZ1JIsDGh3bBVa7fni07rrIIr8y6H1Ukf163Xx5EClL6x1VeRiaNoOejOTUcqFoz27iM=s4800-w800-h600">
+            <span class="tag"><span class="dot"></span>Dzień 01 · czw 30/07</span>
+            <span class="badge trip">Przylot + wycieczka</span>
+          </div>
+          <div class="body">
+            <h3>Cambridge w drodze do Londynu</h3>
+            <div class="where">↳ Cambridge · 30 min bezpośrednim pociągiem ze Stansted</div>
+            <div class="cgj">
+              <div class="row"><div class="lab">Co</div><div class="txt">King's College, spacer wzdłuż rzeki („the Backs"), <b>punting</b> łodzią po Cam, bezpłatne Fitzwilliam Museum.</div></div>
+              <div class="row where-row"><div class="lab">Gdzie</div><div class="txt">Stansted → Cambridge, później Cambridge → London King's Cross (~50 min).</div></div>
+              <div class="row how"><div class="lab">Jak</div><div class="txt">Bagaż do lockerów na dworcu w Cambridge. Pół dnia w mieście, wieczorem przejazd do Londynu i zameldowanie — <b>ostatnie pakowanie walizek do końca wyjazdu</b>.</div></div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- DAY 2 -->
+      <article class="day">
+        <div class="card">
+          <div class="photo">
+            <img alt="Big Ben i Pałac Westminsterski" data-src="https://lh3.googleusercontent.com/place-photos/AJRVUZOtb5EN_oy5SQwIQ7H4FExDEqT21ioKMdnTl_ht5f75LSgd3amcfW06uhlZzJhKu1NVkTh5aVDUdPjr-K7yZymHWBZZakulO_lCYWANzKB2JMRfuagcmNZQ1UJ4YUjzOavuHNJ5O1tcq4USzww=s4800-w800-h600">
+            <span class="tag"><span class="dot"></span>Dzień 02 · pt 31/07</span>
+            <span class="badge">Pieszo · za darmo</span>
+          </div>
+          <div class="body">
+            <h3>Królewski Londyn</h3>
+            <div class="where">↳ Westminster, na piechotę</div>
+            <div class="cgj">
+              <div class="row"><div class="lab">Co</div><div class="txt">Big Ben, Westminster, <b>zmiana warty</b> pod Buckingham Palace, St James's Park, Trafalgar Square i bezpłatna National Gallery.</div></div>
+              <div class="row where-row"><div class="lab">Gdzie</div><div class="txt">Cała trasa pieszo, w jednym rejonie centrum.</div></div>
+              <div class="row how"><div class="lab">Jak</div><div class="txt">Harmonogram zmiany warty sprawdź wcześniej (zwykle ~11:00, w wybrane dni). Wieczorem Soho i Covent Garden.</div></div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- DAY 3 -->
+      <article class="day">
+        <div class="card">
+          <div class="photo">
+            <img alt="Natural History Museum w Londynie" data-src="https://lh3.googleusercontent.com/place-photos/AJRVUZPszIstWsEeitSNYfpp7ivvroE-ApPbrLktXrdEGkg0M48KHgHQOvxMsGEdE_Oe4GHlr-_nN1sKu8FRQ48V0poCXvvI2wETgiOaGc_3oB96iYtS6S2QBfa16kAD6hSGpzv5zwauy1cKdNDn7w=s4800-w750-h600">
+            <span class="tag"><span class="dot"></span>Dzień 03 · sob 01/08</span>
+            <span class="badge">Bezpłatne</span>
+          </div>
+          <div class="body">
+            <h3>Muzea South Kensington</h3>
+            <div class="where">↳ South Kensington</div>
+            <div class="cgj">
+              <div class="row"><div class="lab">Co</div><div class="txt">Natural History Museum (dinozaury, wielki wieloryb) i tuż obok Science Museum — interaktywne. <b>Oba bezpłatne.</b></div></div>
+              <div class="row where-row"><div class="lab">Gdzie</div><div class="txt">Dwa muzea ramię w ramię, do tego Hyde Park po sąsiedzku.</div></div>
+              <div class="row how"><div class="lab">Jak</div><div class="txt">Zarezerwuj darmowy bilet online — krótsza kolejka. Po muzeach spacer po Hyde Parku.</div></div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- DAY 4 -->
+      <article class="day">
+        <div class="card">
+          <div class="photo">
+            <img alt="Tower of London" data-src="https://lh3.googleusercontent.com/place-photos/AJRVUZPLf6zkBJ6O7yyeT5YR29gliLT0Jl0SDZbsQt8H32slwiipb97E91MSt2m7O3E5ABjugoJNOzVuLpVEzOR71Z992lS7_MhjCscJEHQeNCkVrm4L3nZL5AXpbCC09P3BEAd8KCkLHJQdmDCL1zQ=s4800-w780-h600">
+            <span class="tag"><span class="dot"></span>Dzień 04 · niedz 02/08</span>
+            <span class="badge">Tamiza</span>
+          </div>
+          <div class="body">
+            <h3>City i rzeka</h3>
+            <div class="where">↳ City of London · South Bank</div>
+            <div class="cgj">
+              <div class="row"><div class="lab">Co</div><div class="txt">Tower of London (klejnoty koronne), Tower Bridge, St Paul's, most Millennium, bezpłatne Tate Modern, Borough Market.</div></div>
+              <div class="row where-row"><div class="lab">Gdzie</div><div class="txt">Spacer wzdłuż Tamizy aż po London Eye.</div></div>
+              <div class="row how"><div class="lab">Jak</div><div class="txt">Tower — <b>bilet online taniej</b>. Borough Market w niedzielę czynny do 16. Doln\u0105 k\u0142adk\u0105 Tower Bridge przejdziesz za darmo.</div></div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- DAY 5 -->
+      <article class="day trip">
+        <div class="card">
+          <div class="photo">
+            <img alt="Rzymskie łaźnie w Bath" data-src="https://lh3.googleusercontent.com/place-photos/AJRVUZPiFfZ9Ymmh3LzAgW54CVBzX9hCa4sa22nSawKJ-I1EPbFbnSpuJYfye6SrrExpP-mRN3CpO9zDKuaUDLZPOBFF9nZfWNkpBwmN3ZVc2PilDmCCSzfxCDO5OwlTwNy-A-6y_Ucpm1PckzVOEA=s4800-w800-h600">
+            <span class="tag"><span class="dot"></span>Dzień 05 · pon 03/08</span>
+            <span class="badge trip">Wycieczka · nalekko</span>
+          </div>
+          <div class="body">
+            <h3>Bath — dzień bez bagażu</h3>
+            <div class="where">↳ Bath · ~1 h 20 min pociągiem z Paddington</div>
+            <div class="cgj">
+              <div class="row"><div class="lab">Co</div><div class="txt">Rzymskie łaźnie, Bath Abbey, georgiański Royal Crescent, most Pulteney. Opcjonalnie 12 min do Bradford-on-Avon — namiastka Cotswolds.</div></div>
+              <div class="row where-row"><div class="lab">Gdzie</div><div class="txt">Jednodniowo z Londynu — wieczorem powrót do <b>tej samej</b> bazy.</div></div>
+              <div class="row how"><div class="lab">Jak</div><div class="txt">Wczesny pociąg, bilet Advance kupiony wcześniej. Wstęp do Roman Baths zarezerwuj na godzinę. Poniedziałek = mniej tłoczno.</div></div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- DAY 6 -->
+      <article class="day trip">
+        <div class="card">
+          <div class="photo">
+            <img alt="Warner Bros Studio Tour London" data-src="https://lh3.googleusercontent.com/place-photos/AJRVUZPjCnU32nq-6LAIjzuJNK-QJ7_uVBEC3jKtUFNvjdKtaIVuBQs1kORnek2e231YnjS0V-hZesDBLxlwWjV1Csy-walb01WgblkfSKEO6UWX9wUymo7qyMPmWtsRRXFrX7vZG5jRX3eGsdx5aIA=s4800-w800-h600">
+            <span class="tag"><span class="dot"></span>Dzień 06 · wt 04/08</span>
+            <span class="badge trip">Rezerwuj wcześnie!</span>
+          </div>
+          <div class="body">
+            <h3>Studio Harry Potter</h3>
+            <div class="where">↳ Leavesden k. Watford · Euston → Watford Junction ~20 min</div>
+            <div class="cgj">
+              <div class="row"><div class="lab">Co</div><div class="txt">Warner Bros Studio Tour — oryginalne plany, rekwizyty, Wielka Sala, Ulica Pokątna, kulisy filmów.</div></div>
+              <div class="row where-row"><div class="lab">Gdzie</div><div class="txt">Pociąg do Watford Junction, stamtąd bezpłatny autobus pod samo studio.</div></div>
+              <div class="row how"><div class="lab">Jak</div><div class="txt"><b>Bilety kup z dużym wyprzedzeniem</b> — w sierpniu znikają tygodnie wcześniej. Zwiedzanie ~3,5–4 h, po południu Camden albo Covent Garden.</div></div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- DAY 7 -->
+      <article class="day">
+        <div class="card">
+          <div class="photo">
+            <img alt="Royal Observatory w Greenwich" data-src="https://lh3.googleusercontent.com/place-photos/AJRVUZNbiHxLZDpnaplTYViRudtF1IfnMfLh351Vtt4Foj0Wi4aBTfJ4H_YxQkhq9mwoZDFor38RpKTkPsDlEssmonhE8UbSeZjcFS-IiuKH6SMKZD0zvbQ_Sb1Ax-8E9SKaGvat2MC541sHg1mUyw=s4800-w800-h600">
+            <span class="tag"><span class="dot"></span>Dzień 07 · śr 05/08</span>
+            <span class="badge">Rejs po Tamizie</span>
+          </div>
+          <div class="body">
+            <h3>Greenwich + powrót łódką</h3>
+            <div class="where">↳ Greenwich · dojazd DLR</div>
+            <div class="cgj">
+              <div class="row"><div class="lab">Co</div><div class="txt">Żaglowiec Cutty Sark, <b>południk zerowy</b> w Royal Observatory, bezpłatne National Maritime Museum, panorama z parku.</div></div>
+              <div class="row where-row"><div class="lab">Gdzie</div><div class="txt">Lekki, zielony dzień z dala od tłoku centrum.</div></div>
+              <div class="row how"><div class="lab">Jak</div><div class="txt">Powrót <b>łódką po Tamizie</b> (Uber Boat) — tani odpowiednik rejsu z widokiem na panoramę miasta.</div></div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- DAY 8 -->
+      <article class="day trip">
+        <div class="card">
+          <div class="photo">
+            <img alt="Molo w Brighton" data-src="https://lh3.googleusercontent.com/place-photos/AJRVUZORdpEE0dqOmrqMZCyHv14uND5WWrKQyvWqI8kywGrV3cMkmUVrnaFAO2zsj42sTitHUhz0kqSGODtZ-6qCbRsMwSaL5qYaSmSefZhAw-D2INwyERtcsQqISyGnIPwVhI6GnXOAo8mU75oFWzU=s4800-w800-h600">
+            <span class="tag"><span class="dot"></span>Dzień 08 · czw 06/08</span>
+            <span class="badge trip">Morze</span>
+          </div>
+          <div class="body">
+            <h3>Brighton — dzień nad morzem</h3>
+            <div class="where">↳ Brighton · ~1 h pociągiem z London Victoria</div>
+            <div class="cgj">
+              <div class="row"><div class="lab">Co</div><div class="txt">Wiktoriańskie molo z lunaparkiem, plaża, klimatyczna dzielnica The Lanes, salony gier.</div></div>
+              <div class="row where-row"><div class="lab">Gdzie</div><div class="txt">Luźniejszy, wakacyjny dzień — odskocznia od wielkiego miasta.</div></div>
+              <div class="row how"><div class="lab">Jak</div><div class="txt">Bilet Advance kupiony wcześniej. Cały dzień nad wodą, wieczorem powrót do bazy.</div></div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- DAY 9 -->
+      <article class="day">
+        <div class="card">
+          <div class="photo">
+            <img alt="British Museum w Londynie" data-src="https://lh3.googleusercontent.com/place-photos/AJRVUZO1N8yKJISK4X2HN6u3eUoOI09AYTy_g4Pzhvwow1zAPvN57AWDfHjm0MeqUuBdfg6wzBQmFG-75drHX_oJbH7NGEnCUoeC4cCJRwb9Oxf4m0Y7NsGZlBeaH7UfXDDmY4nG0x7QsQnZ4tL9cAzaURUm=s4800-w720-h600">
+            <span class="tag"><span class="dot"></span>Dzień 09 · pt 07/08</span>
+            <span class="badge">Bezpłatne</span>
+          </div>
+          <div class="body">
+            <h3>British Museum + luźny wieczór</h3>
+            <div class="where">↳ Bloomsbury · centrum</div>
+            <div class="cgj">
+              <div class="row"><div class="lab">Co</div><div class="txt">British Museum (Kamień z Rosetty, mumie, marmury Partenonu) — bezpłatne. Potem Covent Garden, Oxford Street, zachód słońca nad South Bank.</div></div>
+              <div class="row where-row"><div class="lab">Gdzie</div><div class="txt">Muzeum na pół dnia, reszta na spokojne łażenie i zakupy.</div></div>
+              <div class="row how"><div class="lab">Jak</div><div class="txt">Domknij listę rzeczy, których nie zdążyliście wcześniej. Ostatnia noc w bazie.</div></div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- DAY 10 -->
+      <article class="day">
+        <div class="card">
+          <div class="photo">
+            <img alt="Tate Modern i panorama nad Tamizą" data-src="https://lh3.googleusercontent.com/place-photos/AJRVUZN_5kOU5Fi_U-mCX8ew6WCOMest4az3jfpBG2hglxaF_nwyQ29ZuegQddTb4ycScoxO-lAElRsel_xbOpUb7krHNCGOHCGNr9_RwBxoQpo4FFHZcne86qLaIxqVpa7YrjqLuJWDFBDWsMmJVJ0=s4800-w800-h600">
+            <span class="tag"><span class="dot"></span>Dzień 10 · sob 08/08</span>
+            <span class="badge">Powrót</span>
+          </div>
+          <div class="body">
+            <h3>Ostatni poranek i droga na lotnisko</h3>
+            <div class="where">↳ Londyn → Stansted</div>
+            <div class="cgj">
+              <div class="row"><div class="lab">Co</div><div class="txt">Spokojny poranek blisko bazy: ostatni spacer, kawa, drobne zakupy.</div></div>
+              <div class="row where-row"><div class="lab">Gdzie</div><div class="txt">Liverpool Street → Stansted Express (~48 min).</div></div>
+              <div class="row how"><div class="lab">Jak</div><div class="txt">Bagaż odbierz najpóźniej ok. <b>17:00</b>. Na lotnisku bądź ~2 h przed odlotem (21:50). Bilet powrotny kup wcześniej.</div></div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- BUDGET -->
+<section class="budget">
+  <div class="wrap">
+    <div class="sec-head"><span class="num">£</span><h2>Budżet orientacyjny</h2></div>
+    <table>
+      <tr><td>Nocleg · 9 nocy (jeden aparthotel, strefa 2–3)</td><td class="amt">£1 080–1 530</td></tr>
+      <tr><td>Transport po Londynie (karta zbliżeniowo, dzienny limit)</td><td class="amt">~£150</td></tr>
+      <tr><td>Pociągi na wycieczki (Cambridge, Bath, Watford, Brighton)</td><td class="amt">£250–400</td></tr>
+      <tr><td>Family &amp; Friends Railcard</td><td class="amt">~£35</td></tr>
+      <tr><td>Atrakcje płatne (Tower, Studio HP, Roman Baths, molo)</td><td class="amt">£360–430</td></tr>
+      <tr><td>Jedzenie (śniadania w aneksie + część na mieście)</td><td class="amt">£600–900</td></tr>
+      <tr class="total"><td>Razem · 3 osoby, bez lotów</td><td class="amt">~£2 300–3 300</td></tr>
+    </table>
+    <p class="note">Widełki, nie wycena — o sumie decyduje głównie cena hotelu i jak często jecie na mieście. Ceny biletów i wstępów sprawdźcie przy rezerwacji.</p>
+  </div>
+</section>
+
+<!-- CHECKLIST -->
+<section class="check">
+  <div class="wrap">
+    <div class="sec-head"><span class="num">✓</span><h2>Do zarezerwowania przed wyjazdem</h2></div>
+    <ul>
+      <li><span class="box"></span><span><b>Hotel</b> — jedna baza, strefa 2–3 (Whitechapel / Liverpool Street / Stratford)</span></li>
+      <li><span class="box"></span><span><b>Studio Harry Potter</b> — bilety (najwcześniej jak się da)</span></li>
+      <li><span class="box"></span><span><b>Roman Baths</b> w Bath — wstęp na konkretną godzinę</span></li>
+      <li><span class="box"></span><span><b>Tower of London</b> — bilet online (taniej)</span></li>
+      <li><span class="box"></span><span><b>Bilety Advance</b> na pociągi: Bath i Brighton</span></li>
+      <li><span class="box"></span><span><b>Railcard</b> — sprawdź Family &amp; Friends vs Two Together</span></li>
+      <li><span class="box"></span><span><b>Stansted Express</b> — bilet tam i z powrotem</span></li>
+      <li><span class="box"></span><span><b>Darmowe wejściówki</b> online: Natural History + Science Museum</span></li>
+      <li><span class="box"></span><span><b>Płatność zbliżeniowa</b> / telefon gotowy na metro i autobusy</span></li>
+    </ul>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="mono">ANGLIA 2026 · 30/07 – 08/08 · LONDYN</div>
+    <p>Plan orientacyjny — godziny, ceny i rozkłady zweryfikujcie przy rezerwacji.<br>Zdjęcia: Google Maps (różni autorzy).</p>
+  </div>
+</footer>
+
+<script>
+  // Hero fade-in
+  (function(){
+    var h=document.getElementById('heroimg');
+    function show(){h.classList.add('loaded');}
+    if(h.complete) show(); else h.addEventListener('load',show);
+  })();
+
+  // Lazy-load day photos + reveal
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var imgs=document.querySelectorAll('.card .photo img[data-src]');
+  imgs.forEach(function(img){
+    img.src=img.getAttribute('data-src');
+    img.addEventListener('load',function(){img.classList.add('loaded');});
+    if(img.complete) img.classList.add('loaded');
+  });
+
+  if(!reduce && 'IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+    },{threshold:.12});
+    document.querySelectorAll('.day').forEach(function(d){io.observe(d);});
+  } else {
+    document.querySelectorAll('.day').forEach(function(d){d.classList.add('in');});
+  }
+</script>
+</body>
+</html>
